@@ -39,7 +39,6 @@ body {
 @keyframes pulse-ring   { 0%{transform:scale(0.8);opacity:1} 100%{transform:scale(2.4);opacity:0} }
 @keyframes blink        { 0%,100%{opacity:1} 50%{opacity:0.3} }
 @keyframes gradient-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-@keyframes particle-float { 0%{transform:translateY(100vh) rotate(0deg);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-100px) rotate(720deg);opacity:0} }
 @keyframes glow-pulse   { 0%,100%{box-shadow:0 0 20px rgba(0,229,255,0.3)} 50%{box-shadow:0 0 40px rgba(0,229,255,0.6),0 0 80px rgba(0,229,255,0.2)} }
 @keyframes slide-in-left  { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
 @keyframes slide-in-right { from{opacity:0;transform:translateX(40px)}  to{opacity:1;transform:translateX(0)} }
@@ -136,15 +135,7 @@ section { position: relative; overflow: hidden; }
 .text-center { text-align: center; margin: 0 auto; }
 
 /* ─── PARTICLES ─── */
-.particles {
-  position: fixed; inset: 0; overflow: hidden;
-  pointer-events: none; z-index: 0;
-}
-.particle {
-  position: absolute; width: 4px; height: 4px;
-  border-radius: 50%; background: var(--cyan);
-  animation: particle-float linear infinite; opacity: 0;
-}
+
 
 /* ─── SCROLL REVEAL ─── */
 .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }

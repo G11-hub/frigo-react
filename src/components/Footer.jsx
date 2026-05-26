@@ -12,7 +12,7 @@ export default function Footer() {
           <span className="nav-logo" style={{ display: 'block', marginBottom: 12 }}>FRIGO</span>
           <p className="footer-desc">
             Pametno praćenje temperature i vlage za restorane, apoteke, hladnjače i rashladni transport.
-            HACCP-sertifikovano. AI napravljeno.
+            HACCP-sertifikovano.
           </p>
           <div className="social-links" style={{ marginTop: 20 }}>
             {['in', 'tw', 'fb', 'yt'].map((s) => (

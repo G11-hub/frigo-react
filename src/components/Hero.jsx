@@ -84,7 +84,7 @@ export default function Hero() {
         <div>
           <div className="hero-badge">
             <span className="hero-badge-dot" />
-            AI monitoring · Realtime · HACCP Sertifikovano
+            Monitoring · Realtime · HACCP Sertifikovano
           </div>
 
           <h1 className="hero-title">
