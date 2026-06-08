@@ -3,24 +3,61 @@ export default function Testimonial() {
     <section className="py-section">
       <div className="section-inner">
         <div className="reveal text-center">
-          <div className="section-tag">Utisci Klijenata</div>
-          <h2 className="section-title" style={{ marginBottom: 48 }}>Šta Kažu Naši Klijenti</h2>
+          <div className="section-tag">
+            Monitoring u Praksi
+          </div>
+
+          <h2
+            className="section-title"
+            style={{ marginBottom: 48 }}
+          >
+            Pouzdanost Kada Je Najpotrebnija
+          </h2>
         </div>
+
         <div className="testimonial-card reveal">
           <p className="testimonial-text">
-            "FRIGO nas je spasio od ogromnog kvara. Naše apotekarske rashladne komore izgubile su hlađenje tokom
-            noći i instant SMS alarm nam je omogućio da premestimo sve na rezervni sistem za 20 minuta. Gubitak
-            robe bio je nula. Pre FRIGO-a, to bi bila katastrofa od 60.000€."
+            "FRIGO omogućava jednostavan pregled
+            temperature i brz odgovor u slučaju
+            odstupanja. Alarm sistem i istorija
+            podataka značajno olakšavaju HACCP
+            evidenciju i svakodnevni nadzor
+            rashladnih komora."
           </p>
+
           <div className="testimonial-author">
-            <div className="author-avatar">MR</div>
-            <div>
-              <div className="author-name">Marija Radović</div>
-              <div className="author-role">Direktorka Operacija · PharmaLogix Srbija</div>
+            <div className="author-avatar">
+              FR
             </div>
-            <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
+
+            <div>
+              <div className="author-name">
+                FRIGO Monitoring
+              </div>
+
+              <div className="author-role">
+                Sistem za monitoring temperature
+                i HACCP evidenciju
+              </div>
+            </div>
+
+            <div
+              style={{
+                marginLeft: 'auto',
+                display: 'flex',
+                gap: 4,
+              }}
+            >
               {[...Array(5)].map((_, i) => (
-                <span key={i} style={{ color: '#fbbf24', fontSize: 18 }}>★</span>
+                <span
+                  key={i}
+                  style={{
+                    color: '#fbbf24',
+                    fontSize: 18,
+                  }}
+                >
+                  ★
+                </span>
               ))}
             </div>
           </div>

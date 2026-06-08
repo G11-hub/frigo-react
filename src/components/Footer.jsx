@@ -34,7 +34,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <div className="footer-copy">© 2025 FRIGO Technologies. Sva prava zadržana.</div>
+        <div className="footer-copy">© 2026 FRIGO Technologies. Sva prava zadržana.</div>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <a href="#" style={{ color: 'var(--muted)', fontSize: 13, textDecoration: 'none' }}>Privatnost</a>
           <a href="#" style={{ color: 'var(--muted)', fontSize: 13, textDecoration: 'none' }}>Uslovi</a>

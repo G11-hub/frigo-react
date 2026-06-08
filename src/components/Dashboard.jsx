@@ -2,10 +2,41 @@ import { useState, useEffect } from 'react'
 import Sparkline from './Sparkline'
 
 const SENSORS = [
-  { name: 'Rashladna Komora 1', location: 'ZONA A · Prizemlje',  temp: 3.3,   humidity: 64, status: 'NORMAL',  tempData: [3.1,3.0,3.2,3.3,3.1,3.3,3.2,3.4,3.3] },
-  { name: 'Hladna Soba B',      location: 'ZONA B · Magacin',    temp: -18.3, humidity: 78, status: 'WARNING', tempData: [-18.1,-18.2,-17.9,-18.4,-18.5,-18.0,-18.3,-18.6,-18.3] },
-  { name: 'Apotekarski Frižider',location: 'ZONA C · Medicinska',temp: 6.9,   humidity: 55, status: 'ALERT',   tempData: [4.2,4.8,5.1,5.5,5.9,6.2,6.4,6.7,6.9] },
-  { name: 'Zamrzivač A',        location: 'ZONA D · Zaleđe',     temp: -21.1, humidity: 82, status: 'NORMAL',  tempData: [-21.3,-21.2,-21.0,-21.1,-21.4,-21.2,-21.0,-21.1,-21.1] },
+  {
+    name: 'Komora za Zrenje',
+    location: 'ZONA A · Proizvodnja',
+    temp: 3.3,
+    humidity: 64,
+    status: 'NORMAL',
+    tempData: [3.1,3.0,3.2,3.3,3.1,3.3,3.2,3.4,3.3]
+  },
+
+  {
+    name: 'Komora Proizvoda',
+    location: 'ZONA B · Magacin',
+    temp: -18.3,
+    humidity: 78,
+    status: 'WARNING',
+    tempData: [-18.1,-18.2,-17.9,-18.4,-18.5,-18.0,-18.3,-18.6,-18.3]
+  },
+
+  {
+    name: 'Farmaceutska Zona',
+    location: 'ZONA C · Medicinski Blok',
+    temp: 6.9,
+    humidity: 55,
+    status: 'ALERT',
+    tempData: [4.2,4.8,5.1,5.5,5.9,6.2,6.4,6.7,6.9]
+  },
+
+  {
+    name: 'Tunel Zamrzivača',
+    location: 'ZONA D · Hladni Lanac',
+    temp: -21.1,
+    humidity: 82,
+    status: 'NORMAL',
+    tempData: [-21.3,-21.2,-21.0,-21.1,-21.4,-21.2,-21.0,-21.1,-21.1]
+  },
 ]
 
 function SensorCard({ name, location, temp, humidity, status, tempData }) {
