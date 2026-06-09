@@ -17,7 +17,7 @@ export default function Navbar() {
           className="nav-logo"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          FRIGO
+          FRIGOTECH
         </div>
 
         <ul className="nav-links">

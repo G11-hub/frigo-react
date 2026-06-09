@@ -9,7 +9,7 @@ export default function Footer() {
     <footer>
       <div className="footer-grid">
         <div className="footer-brand">
-          <span className="nav-logo" style={{ display: 'block', marginBottom: 12 }}>FRIGO</span>
+          <span className="nav-logo" style={{ display: 'block', marginBottom: 12 }}>FRIGOTECH</span>
           <p className="footer-desc">
             Pametno praćenje temperature i vlage za restorane, apoteke, hladnjače i rashladni transport.
             HACCP-sertifikovano.

@@ -19,7 +19,7 @@ export default function Industries() {
           <div className="section-tag">Industrije</div>
           <h2 className="section-title">Napravljeno za Vašu Industriju</h2>
           <p className="section-sub" style={{ margin: '0 auto 56px' }}>
-            Od malih apoteka do velikih nacionalnih lanaca — FRIGO raste sa vama.
+            Od malih apoteka do velikih nacionalnih lanaca — FRIGOTECH raste sa vama.
           </p>
         </div>
         <div className="industries-grid">

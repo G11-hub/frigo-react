@@ -1,14 +1,14 @@
 const FEATURES = [
-  {
-    icon: '❄️',
-    title: 'Monitoring Temperature',
-    desc:
-      'Praćenje temperature i vlage u rashladnim komorama sa pregledom podataka u realnom vremenu.',
-    tag: 'MONITORING',
-    tagColor: '#00e5ff',
-    gradient:
-      'linear-gradient(135deg,rgba(0,229,255,0.2),rgba(79,195,247,0.1))',
-  },
+{
+  icon: '❄️',
+  title: 'Monitoring Temperature',
+  desc:
+    'Praćenje temperature i vlage u rashladnim komorama uz automatsko osvežavanje podataka na svakih 20 minuta.',
+  tag: 'MONITORING',
+  tagColor: '#00e5ff',
+  gradient:
+    'linear-gradient(135deg,rgba(0,229,255,0.2),rgba(79,195,247,0.1))',
+},
 
   {
     icon: '🔔',

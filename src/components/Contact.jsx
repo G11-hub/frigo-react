@@ -51,6 +51,28 @@ export default function Contact() {
             {sent ? '✓ Poruka Poslata!' : 'Pošalji Poruku — Zakaži Demo →'}
           </button>
         </form>
+        <div
+  style={{
+    marginTop: 24,
+    textAlign: 'center',
+    color: 'var(--muted)',
+    fontSize: 14,
+  }}
+>
+  Ili nas kontaktirajte direktno:
+  <br />
+
+  <a
+    href="tel:+381601234567"
+    style={{
+      color: 'var(--cyan)',
+      textDecoration: 'none',
+      fontWeight: 600,
+    }}
+  >
+    +381 613079197
+  </a>
+</div>
       </div>
     </section>
   )

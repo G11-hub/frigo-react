@@ -107,11 +107,17 @@ export default function Dashboard() {
     <section id="monitoring" className="py-section">
       <div className="blob" style={{ width: 400, height: 400, background: 'rgba(79,195,247,0.04)', top: '50%', right: '-10%', animationDuration: '10s' }} />
       <div className="section-inner">
-        <div className="reveal">
-          <div className="section-tag">Live Dashboard</div>
-          <h2 className="section-title">Praćenje Senzora u Realnom Vremenu</h2>
-          <p className="section-sub">Svaki senzor se ažurira uživo. Temperatura, vlaga, status — sve na jednom mestu.</p>
-        </div>
+      <div className="reveal">
+  <div className="section-tag">Monitoring Dashboard</div>
+
+  <h2 className="section-title">
+    Praćenje Temperature i Vlage
+  </h2>
+
+  <p className="section-sub">
+    Pregled temperature, vlage i statusa rashladnih komora na jednom mestu uz automatsko osvežavanje podataka.
+  </p>
+</div>
         <div className="sensors-grid">
           {SENSORS.map((s, i) => (
             <div key={i} className="reveal" style={{ animationDelay: `${i * 100}ms` }}>
