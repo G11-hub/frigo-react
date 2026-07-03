@@ -106,14 +106,12 @@ export default function Hero() {
             digitalna HACCP evidencija za hladnjače,
             restorane i prehrambenu industriju.
           </p>
-          <div className="hero-btns">
-            <button className="btn-primary" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-              Zatraži Demo →
-            </button>
-            <button className="btn-secondary" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
-              Istraži Funkcije
-            </button>
-          </div>
+        <button className="btn-primary" onClick={() => document.getElementById('kontakt')?.scrollIntoView({ behavior: 'smooth' })}>
+  Zatraži Demo →
+</button>
+<button className="btn-secondary" onClick={() => document.getElementById('funkcije')?.scrollIntoView({ behavior: 'smooth' })}>
+  Istraži Funkcije
+</button>
         </div>
        <div style={{ animation: 'slide-in-right 0.8s ease-out forwards', paddingBottom: '60px' }}>
   <HeroDashboard />
