@@ -446,6 +446,8 @@ footer { background: var(--dark2); border-top: 1px solid var(--glass-border); pa
   .step-card { max-width: 420px; width: 100%; }
   .app-section-grid { grid-template-columns: 1fr !important; text-align: center; gap: 40px; }
   .app-features-list { align-items: center; }
+    .dashboard { margin-top: 40px; }
+
 }
 
 @media (max-width: 768px) {

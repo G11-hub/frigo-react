@@ -16,7 +16,6 @@ function HeroDashboard() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {/* Na mobilnom stats idu IZNAD grafa */}
       <style>{`
         @media (max-width: 1024px) {
           .hero-stats-grid { order: -1 !important; }
@@ -24,12 +23,10 @@ function HeroDashboard() {
       `}</style>
       <div className="dashboard">
         <div className="scan-effect"><div className="scan-line" /></div>
-
         <div className="dash-header">
           <div className="dash-title">FRIGO MONITOR</div>
           <div className="dash-status"><span className="live-dot" />&nbsp;AKTIVNO</div>
         </div>
-
         <div className="mini-sensors">
           {[
             { l: 'KOMORA', v: `${live.toFixed(1)}°C`, c: '#00e5ff' },
@@ -42,11 +39,9 @@ function HeroDashboard() {
             </div>
           ))}
         </div>
-
         <div className="chart-container">
           <Sparkline data={temps} color="#00e5ff" />
         </div>
-
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {['HACCP Evidencija', 'Push Alarmi', 'Istorija Podataka', 'PDF Izvoz'].map((t, i) => (
             <span key={i} style={{
@@ -57,8 +52,6 @@ function HeroDashboard() {
           ))}
         </div>
       </div>
-
-      {/* Stats ispod charta — iznad grafa na mobilnom */}
       <div className="hero-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
         {[
           { n: '24/7', l: 'Neprekidan monitoring', icon: '🟢', sub: 'Svaka komora, u svakom trenutku' },
@@ -94,30 +87,25 @@ function HeroDashboard() {
 
 export default function Hero() {
   return (
-    <section id="hero">
+    <section id="hero" style={{ paddingBottom: '80px' }}>
       <div className="blob" style={{ width: 500, height: 500, background: 'rgba(0,229,255,0.06)', top: '10%', left: '-10%', animationDuration: '12s' }} />
       <div className="blob" style={{ width: 600, height: 600, background: 'rgba(179,157,219,0.06)', top: '20%', right: '-15%', animationDuration: '15s', animationDelay: '4s' }} />
-
       <div className="hero-grid">
-        {/* LEFT SIDE */}
         <div>
           <div className="hero-badge">
             <span className="hero-badge-dot" />
             HACCP Monitoring · Alarmi · Istorija Temperature
           </div>
-
           <h1 className="hero-title">
             <span className="gradient">Potpuna kontrola</span>
             <br />temperature i vlažnosti
             <br />u realnom vremenu
           </h1>
-
           <p className="hero-sub">
             Praćenje temperature i vlage, automatski alarmi i
             digitalna HACCP evidencija za hladnjače,
             restorane i prehrambenu industriju.
           </p>
-
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
               Zatraži Demo →
@@ -127,11 +115,9 @@ export default function Hero() {
             </button>
           </div>
         </div>
-
-        {/* RIGHT SIDE — dashboard + stats */}
-        <div style={{ animation: 'slide-in-right 0.8s ease-out forwards' }}>
-          <HeroDashboard />
-        </div>
+       <div style={{ animation: 'slide-in-right 0.8s ease-out forwards', paddingBottom: '60px' }}>
+  <HeroDashboard />
+</div>
       </div>
     </section>
   )
