@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upitnik za rashladnu komoru — frigotech</title>
+<meta name="description" content="Popunite uslove rada i pošaljite upit za rashladnu komoru na Viber ili WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PODEŠAVANJE — ovde upiši svoje brojeve, ništa drugo ne diraj
+   Broj se upisuje u međunarodnom formatu, bez nule i bez razmaka.
+   Primer: 0641234567  ->  381641234567
+   ============================================================ */
+:root{
+  /* boje */
+  --led:      #E9EEF1;   /* pozadina */
+  --povrsina: #FFFFFF;   /* kartice */
+  --mastilo:  #16232B;   /* osnovni tekst */
+  --priguseno:#46596A;   /* pomoćni tekst */
+  --linija:   #CBD8DF;   /* hairline */
+  --greska:   #B3261E;
+  --akcenat:  #0F8A6A;   /* menja se sa izabranom temperaturom */
+  --akcenat-blago: rgba(15,138,106,.10);
+  --marka-svetla: #0BA0E3;  /* plava sa logotipa, svetlija */
+  --marka-tamna:  #0A4A9C;  /* plava sa logotipa, tamnija */
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  padding:0 0 74px;
+  background:var(--led);
+  color:var(--mastilo);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+}
+.omot{max-width:640px;margin:0 auto;padding:0 16px}
+
+/* ---------- zaglavlje ---------- */
+.zaglavlje{padding:34px 0 22px}
+.marka{
+  font-family:"Barlow Condensed",Impact,sans-serif;
+  font-weight:700;font-size:clamp(46px,13vw,74px);line-height:.9;
+  letter-spacing:-.01em;text-transform:uppercase;
+  background:linear-gradient(180deg,var(--marka-svetla) 0%,var(--marka-tamna) 82%);
+  -webkit-background-clip:text;background-clip:text;
+  color:var(--marka-tamna);-webkit-text-fill-color:transparent;
+  margin-bottom:2px;
+}
+.marka-pod{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--marka-tamna);
+  margin-bottom:16px;
+}
+.naslov{
+  font-family:"Barlow Condensed",Impact,sans-serif;
+  font-weight:700;font-size:clamp(32px,8vw,46px);line-height:.96;
+  letter-spacing:-.005em;text-transform:uppercase;margin:0 0 12px;
+}
+.uvod{color:var(--mastilo);font-size:15px;font-weight:500;margin:0;max-width:46ch}
+
+/* ---------- sekcije ---------- */
+.sekcija{
+  background:var(--povrsina);
+  border:1px solid var(--linija);
+  border-radius:3px;
+  padding:22px 18px 24px;
+  margin-bottom:14px;
+}
+.sekcija-glava{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+.sekcija-broj{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  color:var(--akcenat);transition:color .35s ease;
+}
+.sekcija-ime{
+  font-family:"Barlow Condensed",sans-serif;font-weight:600;
+  font-size:24px;text-transform:uppercase;letter-spacing:.02em;line-height:1;
+}
+
+/* ---------- polja ---------- */
+.polje{margin-bottom:20px}
+.polje:last-child{margin-bottom:0}
+label,.oznaka{
+  display:block;font-size:13px;font-weight:600;
+  letter-spacing:.02em;margin-bottom:7px;
+}
+.pomoc{
+  font-size:13.5px;font-weight:600;line-height:1.4;margin:-3px 0 9px;
+  color:#0A4A9C;
+  background:linear-gradient(90deg,#0E7CC9 0%,#0A3E82 70%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+@supports not (background-clip:text){
+  .pomoc{-webkit-text-fill-color:#0A4A9C}
+}
+.obavezno{color:var(--akcenat);font-weight:600;transition:color .35s ease}
+
+input[type=text],input[type=tel],input[type=number],select,textarea{
+  width:100%;padding:11px 12px;
+  border:1px solid var(--linija);border-radius:2px;
+  background:#fff;color:var(--mastilo);
+  font-family:inherit;font-size:16px;
+}
+input[type=number]{font-family:"IBM Plex Mono",monospace}
+textarea{min-height:92px;resize:vertical}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--priguseno) 50%),linear-gradient(135deg,var(--priguseno) 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 13px) 20px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{
+  outline:2px solid var(--akcenat);outline-offset:2px;
+}
+input.los,select.los,textarea.los{border-color:var(--greska);background:#FDF3F2}
+.poruka-greske{display:none;color:var(--greska);font-size:13px;margin-top:6px}
+.poruka-greske.vidi{display:block}
+
+/* ---------- dugmad za izbor (radio / čekiranje) ---------- */
+.izbor{display:flex;flex-wrap:wrap;gap:8px}
+.cip{
+  font-family:inherit;font-size:14px;font-weight:500;
+  padding:9px 14px;border:1px solid var(--linija);border-radius:2px;
+  background:#fff;color:var(--mastilo);cursor:pointer;
+  transition:border-color .15s ease,background .15s ease,color .15s ease;
+}
+.cip:hover{border-color:var(--mastilo)}
+.cip[aria-pressed=true]{
+  background:var(--akcenat);border-color:var(--akcenat);color:#fff;
+}
+.izbor.los .cip{border-color:var(--greska)}
+
+/* ---------- dimenzije ---------- */
+.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.dva{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.merenje{
+  margin-top:14px;padding:16px 16px 14px;background:var(--akcenat-blago);
+  border-left:3px solid var(--akcenat);
+  transition:background .35s ease,border-color .35s ease;
+}
+.merenje .red{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  padding:5px 0;
+}
+.merenje .razmak{height:10px}
+.merenje dt{font-size:14px;font-weight:600;line-height:1.3}
+.merenje dt em{font-style:normal;font-weight:600;color:var(--marka-tamna);font-size:13px}
+.merenje dd{
+  margin:0;font-family:"IBM Plex Mono",monospace;
+  font-size:15px;font-weight:500;line-height:1.3;white-space:nowrap;
+}
+.merenje .zbir{
+  border-top:1px solid var(--linija);margin-top:4px;padding-top:9px;
+}
+.merenje .zbir dt{text-transform:uppercase;letter-spacing:.04em;font-size:13px}
+.merenje .zbir dd{font-weight:600;color:var(--akcenat);transition:color .35s ease}
+
+/* ---------- SKALA TEMPERATURE (potpis stranice) ---------- */
+.termometar{margin-top:4px}
+.ocitavanje{
+  display:flex;align-items:baseline;gap:10px;margin-bottom:14px;
+}
+.ocitavanje b{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;
+  font-size:44px;line-height:1;color:var(--akcenat);
+  transition:color .35s ease;font-variant-numeric:tabular-nums;
+}
+.rezim-natpis{
+  font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;
+  font-size:15px;font-weight:600;letter-spacing:.06em;color:var(--priguseno);
+}
+.klizac{
+  -webkit-appearance:none;appearance:none;width:100%;height:34px;
+  background:transparent;cursor:pointer;display:block;
+}
+.klizac::-webkit-slider-runnable-track{
+  height:10px;border-radius:1px;
+  background:linear-gradient(90deg,#3D2FA8 0%,#2A4DBB 30%,#1C63C4 55%,#0F8A6A 71%,#0F8A6A 100%);
+}
+.klizac::-moz-range-track{
+  height:10px;border-radius:1px;
+  background:linear-gradient(90deg,#3D2FA8 0%,#2A4DBB 30%,#1C63C4 55%,#0F8A6A 71%,#0F8A6A 100%);
+}
+.klizac::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:14px;height:30px;margin-top:-10px;border-radius:1px;
+  background:var(--mastilo);border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.35);
+}
+.klizac::-moz-range-thumb{
+  width:14px;height:30px;border-radius:1px;
+  background:var(--mastilo);border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.35);
+}
+.podeoci{
+  display:flex;justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  color:var(--marka-tamna);letter-spacing:.04em;margin-top:-4px;
+}
+.brzi{margin-top:16px}
+.grupa-temp{
+  width:100%;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--marka-tamna);
+  margin:8px 0 -1px;
+}
+
+/* ---------- traka na dnu ---------- */
+.traka{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--mastilo);color:#fff;
+  border-top:3px solid var(--akcenat);
+  transition:border-color .35s ease;
+}
+.traka-omot{max-width:640px;margin:0 auto;padding:12px 16px 14px}
+.displej{
+  display:flex;gap:18px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;
+}
+.displej span{color:#8FA5B2;text-transform:uppercase}
+.displej b{color:#fff;font-weight:600}
+.slanje{display:grid;grid-template-columns:1fr;gap:10px}
+.posalji{
+  width:100%;font-family:"IBM Plex Sans",sans-serif;
+  font-size:18px;font-weight:600;
+  padding:16px 12px;border-radius:8px;border:0;color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.vb{background:#7360F2}
+.wa{background:#25D366}
+.em{background:var(--marka-svetla)}
+.posalji:hover{filter:brightness(.94)}
+.posalji:active{transform:translateY(1px)}
+.kopiraj{
+  display:block;width:100%;margin-top:12px;background:none;border:0;
+  color:var(--priguseno);font-family:"IBM Plex Mono",monospace;font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:8px;
+}
+.kopiraj:hover{color:var(--mastilo)}
+.saopstenje{
+  display:none;padding:11px 13px;margin-bottom:14px;border-radius:3px;
+  background:var(--akcenat-blago);border-left:2px solid var(--akcenat);
+  font-size:13px;line-height:1.35;
+}
+.saopstenje.vidi{display:block}
+.saopstenje.crveno{background:#FDF3F2;border-left-color:var(--greska);color:var(--greska)}
+
+footer{padding:26px 0 10px;text-align:center}
+.logo-ploca{
+  background:#F7F7F8;border:1px solid var(--linija);border-radius:3px;
+  padding:22px 18px 20px;
+}
+.logo-ploca img{width:100%;max-width:250px;height:auto;display:block;margin:0 auto}
+.logo-veza{
+  display:inline-block;margin-top:14px;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;
+  letter-spacing:.06em;color:var(--mastilo);text-decoration:none;
+  border-bottom:1px solid var(--linija);padding-bottom:2px;
+}
+.logo-veza:hover{border-bottom-color:var(--mastilo)}
+.sitno{color:var(--priguseno);font-size:13px;font-weight:500;margin:16px 0 0}
+
+@media (max-width:400px){
+  .tri{grid-template-columns:1fr 1fr}
+  .tri > div:last-child{grid-column:1 / -1}
+  .merenje{grid-template-columns:1fr 1fr}
+  .displej{flex-wrap:wrap;gap:6px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="omot">
+
+  <header class="zaglavlje">
+    <div class="marka">Frigotech</div>
+    <div class="marka-pod">upitnik za rashladne komore</div>
+    <h1 class="naslov">Uslovi rada<br>vaše komore</h1>
+    <p class="uvod">Popunite ono što znate — za ostalo slobodno stavite procenu. Na osnovu ovih podataka računam potrebnu rashladnu snagu i šaljem ponudu.</p>
+  </header>
+
+  <!-- ============ 01 KOMORA ============ -->
+  <section class="sekcija">
+    <div class="sekcija-glava"><span class="sekcija-broj">01</span><h2 class="sekcija-ime">Komora</h2></div>
+
+    <div class="polje">
+      <span class="oznaka">Režim komore <span class="obavezno">·</span></span>
+      <div class="izbor" id="tip" data-jedan="1" data-obavezno="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="Plusna (iznad nule)">Plusna</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="Minusna (ispod nule)">Minusna</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="Komora za zrenje">Komora za zrenje</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="Šok zamrzavanje">Šok zamrzavanje</button>
+      </div>
+      <p class="poruka-greske">Izaberite režim komore.</p>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Komora je</span>
+      <div class="izbor" id="novost" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="Nova, tek se pravi">Nova</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="Postojeća">Postojeća</button>
+      </div>
+    </div>
+
+    <div class="polje" id="polje-oprema" hidden>
+      <span class="oznaka">Postojeća oprema</span>
+      <div class="izbor" id="oprema" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="Ima agregat i isparivač koji ostaju">Ostaje postojeća oprema</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="Ide kompletno nova oprema">Ide nova oprema</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="Ne zna se još">Ne znam</button>
+      </div>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Dimenzije komore u metrima <span class="obavezno">·</span></span>
+      <div class="tri">
+        <div><label for="duzina">Dužina</label><input type="number" id="duzina" inputmode="decimal" step="0.01" min="0" placeholder="3,00"></div>
+        <div><label for="sirina">Širina</label><input type="number" id="sirina" inputmode="decimal" step="0.01" min="0" placeholder="3,00"></div>
+        <div><label for="visina">Visina</label><input type="number" id="visina" inputmode="decimal" step="0.01" min="0" placeholder="2,70"></div>
+      </div>
+      <p class="poruka-greske">Upišite sve tri dimenzije.</p>
+      <dl class="merenje">
+        <div class="red"><dt>Tip</dt><dd id="izlaz-tip">—</dd></div>
+        <div class="red"><dt>Dimenzije</dt><dd id="izlaz-mere">—</dd></div>
+        <div class="red"><dt>Zapremina</dt><dd id="izlaz-zapremina">—</dd></div>
+        <div class="razmak"></div>
+        <div class="red"><dt>Paneli (zidovi + plafon)</dt><dd id="izlaz-zidovi">—</dd></div>
+        <div class="red" id="red-podni" hidden><dt>Podni paneli <em id="uslov-podni">(minusna komora)</em></dt><dd id="izlaz-pod">—</dd></div>
+        <div class="red zbir"><dt>Ukupno panela</dt><dd id="izlaz-ukupno">—</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 02 ROBA ============ -->
+  <section class="sekcija">
+    <div class="sekcija-glava"><span class="sekcija-broj">02</span><h2 class="sekcija-ime">Roba</h2></div>
+
+    <div class="polje">
+      <span class="oznaka">Šta se čuva u komori <span class="obavezno">·</span></span>
+      <p class="pomoc">Može više stavki.</p>
+      <div class="izbor" id="roba" data-obavezno="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="svinjske i goveđe polutke">Svinjske i goveđe polutke</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="tople polutke odmah po klanju">Tople polutke po klanju</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="rasečeno meso u komadima">Rasečeno meso</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="mleveno meso">Mleveno meso</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="roštiljski program — ćevapi, pljeskavice">Ćevapi, pljeskavice</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="živina">Živina</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="riba i morski plodovi">Riba i morski plodovi</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="barene i dimljene prerađevine — viršle, salame">Barene i dimljene prerađevine</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="suvomesnato">Suvomesnato</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="suvo zrenje mesa">Suvo zrenje mesa</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="vakum zrenje mesa">Vakum zrenje mesa</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="smrznuta roba">Smrznuta roba</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="sladoled">Sladoled</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="mleko i mlečni proizvodi">Mleko i mlečni proizvodi</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="sir">Sir</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="jaja">Jaja</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="voće">Voće</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="povrće">Povrće</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="krompir i luk">Krompir i luk</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="pečurke">Pečurke</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="pekarski proizvodi i testo">Pekara i testo</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="kolači i torte">Kolači i torte</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="gotova jela">Gotova jela</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="pečenje">Pečenje</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="piće">Piće</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="cveće">Cveće</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="lekovi i vakcine">Lekovi i vakcine</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="mešovita roba">Mešovita roba</button>
+      </div>
+      <p class="poruka-greske">Izaberite bar jednu vrstu robe ili je upišite ispod.</p>
+    </div>
+
+    <div class="polje">
+      <label for="roba-ostalo">Nešto što nije na spisku</label>
+      <input type="text" id="roba-ostalo" placeholder="Upišite svojim rečima">
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Kako je roba složena</span>
+      <div class="izbor" id="slaganje">
+        <button type="button" class="cip" aria-pressed="false" data-v="rinfuz">Rinfuz</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="u gajbama">Gajbe</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="na paletama">Palete</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="na kukama i šinama">Kuke i šine</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="na policama">Police</button>
+      </div>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Vlažnost vazduha</span>
+      <p class="pomoc">Bitna je kod voća, povrća i zrenja suvomesnatog.</p>
+      <div class="izbor" id="vlaznost" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="bitna je">Bitna je</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="nije bitna">Nije bitna</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="ne zna">Ne znam</button>
+      </div>
+      <div style="margin-top:10px"><label for="vlaznost-broj">Tražena vlažnost u procentima (ako znate)</label><input type="number" id="vlaznost-broj" inputmode="numeric" min="0" max="100" placeholder="npr. 90"></div>
+    </div>
+  </section>
+
+  <!-- ============ 03 TEMPERATURA ============ -->
+  <section class="sekcija">
+    <div class="sekcija-glava"><span class="sekcija-broj">03</span><h2 class="sekcija-ime">Željena temperatura</h2></div>
+
+    <div class="termometar">
+      <div class="ocitavanje"><b id="izlaz-temp">+4 °C</b><span class="rezim-natpis" id="izlaz-rezim">plusni režim</span></div>
+      <input type="range" class="klizac" id="temperatura" min="-40" max="18" step="1" value="4" aria-label="Željena temperatura u komori">
+      <div class="podeoci"><span>−40</span><span>−30</span><span>−20</span><span>−10</span><span>0</span><span>+10</span><span>+18</span></div>
+
+      <div class="brzi">
+        <span class="oznaka">Uobičajene vrednosti</span>
+        <p class="pomoc">Dodirnite ono što vam najviše odgovara, pa po potrebi doterajte klizačem.</p>
+
+        <div class="grupa-temp">Hlađenje</div>
+        <div class="izbor" id="brzi-temp">
+          <button type="button" class="cip" data-t="-2">−2 hlađenje toplih polutki</button>
+          <button type="button" class="cip" data-t="-1">−1 svinjske i goveđe polutke</button>
+          <button type="button" class="cip" data-t="0">0 riba na ledu</button>
+          <button type="button" class="cip" data-t="1">+1 mleveno meso, ćevapi</button>
+          <button type="button" class="cip" data-t="2">+2 sveže meso, živina</button>
+          <button type="button" class="cip" data-t="3">+3 viršle, salame</button>
+          <button type="button" class="cip" data-t="4">+4 mlečno, gotova jela</button>
+          <button type="button" class="cip" data-t="5">+5 kolači, torte</button>
+          <button type="button" class="cip" data-t="6">+6 jaja, pečurke</button>
+          <button type="button" class="cip" data-t="8">+8 voće, povrće</button>
+          <button type="button" class="cip" data-t="10">+10 krompir, luk</button>
+          <button type="button" class="cip" data-t="12">+12 piće, testo</button>
+          <button type="button" class="cip" data-t="13">+13 suvo zrenje mesa</button>
+          <button type="button" class="cip" data-t="14">+14 suvomesnato, sušara</button>
+          <button type="button" class="cip" data-t="16">+16 čokolada, cveće</button>
+
+          <span class="grupa-temp">Zamrzavanje</span>
+          <button type="button" class="cip" data-t="-12">−12 kratko čuvanje</button>
+          <button type="button" class="cip" data-t="-18">−18 zamrznuta roba</button>
+          <button type="button" class="cip" data-t="-20">−20 meso, riba</button>
+          <button type="button" class="cip" data-t="-25">−25 sladoled</button>
+          <button type="button" class="cip" data-t="-30">−30 duboko zamrzavanje</button>
+          <button type="button" class="cip" data-t="-35">−35 šok komora</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 UGRADNJA ============ -->
+  <section class="sekcija">
+    <div class="sekcija-glava"><span class="sekcija-broj">04</span><h2 class="sekcija-ime">Ugradnja</h2></div>
+
+    <div class="polje">
+      <span class="oznaka">Gde stoji komora</span>
+      <div class="izbor" id="mesto-komore" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="u objektu">U objektu</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="napolju">Napolju</button>
+      </div>
+    </div>
+
+    <div class="polje" id="polje-sunce" hidden>
+      <span class="oznaka">Izloženost suncu</span>
+      <div class="izbor" id="sunce" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="direktno na suncu">Direktno na suncu</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="delimično u hladu">Delimično u hladu</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="potpuno u hladu">Potpuno u hladu</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="ispod nadstrešnice">Nadstrešnica</button>
+      </div>
+    </div>
+
+    <div class="polje">
+      <label for="panel">Debljina panela</label>
+      <select id="panel">
+        <option value="">— izaberite —</option>
+        <option>60 mm</option><option>80 mm</option><option>100 mm</option>
+        <option>120 mm</option><option>150 mm</option><option>200 mm</option>
+        <option>ne zna — neka se predloži</option>
+      </select>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Pod komore <span class="obavezno">·</span></span>
+      <div class="izbor" id="pod" data-jedan="1" data-obavezno="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="izolovan panel pod">Izolovan panel</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="beton direktno na tlu">Beton na tlu</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="komora bez poda">Bez poda</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="ne zna">Ne znam</button>
+      </div>
+      <p class="poruka-greske">Izaberite kakav je pod.</p>
+    </div>
+
+    <div class="polje">
+      <label for="spolja">Spoljna temperatura oko komore, leti</label>
+      <p class="pomoc">Okvirno, u °C. Nije obavezno.</p>
+      <input type="number" id="spolja" inputmode="decimal" step="1" placeholder="npr. 35">
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Napajanje na licu mesta</span>
+      <div class="izbor" id="struja" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="220 V">220 V</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="380 V">380 V</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="ne zna">Ne znam</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 OPTEREĆENJE ============ -->
+  <section class="sekcija">
+    <div class="sekcija-glava"><span class="sekcija-broj">05</span><h2 class="sekcija-ime">Opterećenje</h2></div>
+
+    <div class="polje">
+      <span class="oznaka">Koliko robe ulazi u komoru <span class="obavezno">·</span></span>
+      <p class="pomoc">Ako ne znate tačno, upišite procenu — bez ovog podatka snaga se ne može izračunati.</p>
+      <div class="dva">
+        <div><label for="unos-kolicina">Količina</label><input type="number" id="unos-kolicina" inputmode="decimal" step="0.1" min="0" placeholder="300"></div>
+        <div><label for="unos-jedinica">Jedinica</label>
+          <select id="unos-jedinica"><option>kg</option><option>tone</option></select>
+        </div>
+      </div>
+      <div style="margin-top:8px">
+        <div class="izbor" id="unos-period" data-jedan="1">
+          <button type="button" class="cip" aria-pressed="true" data-v="na dan">Na dan</button>
+          <button type="button" class="cip" aria-pressed="false" data-v="na nedelju">Na nedelju</button>
+        </div>
+      </div>
+      <p class="poruka-greske">Upišite koliko robe ulazi, makar procenu.</p>
+    </div>
+
+    <div class="polje">
+      <label for="ulazna-temp">Na kojoj temperaturi roba ulazi <span class="obavezno">·</span></label>
+      <select id="ulazna-temp">
+        <option value="">— izaberite —</option>
+        <option>toplo meso odmah po klanju (+35 do +38 °C)</option>
+        <option>toplo pečenje ili kuvano jelo (+60 do +80 °C)</option>
+        <option>pekarski proizvodi tek izvađeni iz peći</option>
+        <option>sveže ubrano voće ili povrće sa njive, leti (+25 do +30 °C)</option>
+        <option>istovar sa spoljne temperature, vozilo bez hlađenja (+20 do +35 °C)</option>
+        <option>već ohlađena roba iz druge komore ili kamiona hladnjače (+2 do +4 °C)</option>
+        <option>riba na ledu (0 do +2 °C)</option>
+        <option>već smrznuta roba (−18 do −20 °C)</option>
+        <option>ne zna se / mešano</option>
+      </select>
+      <p class="poruka-greske">Izaberite kako roba ulazi.</p>
+      <div style="margin-top:10px"><label for="ulazna-temp-broj">Tačna temperatura ako je znate (°C)</label><input type="number" id="ulazna-temp-broj" inputmode="decimal" step="1" placeholder="npr. 37"></div>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Za koje vreme roba treba da se ohladi ili zamrzne <span class="obavezno">·</span></span>
+      <div class="izbor" id="vreme-hladjenja" data-jedan="1" data-obavezno="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="za 24 sata">Za 24 sata</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="preko noći, 8 do 12 sati">Preko noći</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="u toku smene, do 8 sati">U toku smene</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="što brže — šok režim">Što brže</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="roba ulazi već ohlađena, samo se čuva">Samo se čuva</button>
+      </div>
+      <p class="poruka-greske">Izaberite za koje vreme roba treba da bude na temperaturi.</p>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Koliko robe treba da stane u komoru</span>
+      <p class="pomoc">Ako ste komoru merili prema nekoj količini, upišite je. Ako niste, preskočite — vidi se iz dimenzija.</p>
+      <div class="dva">
+        <div><label for="maks-kolicina">Količina</label><input type="number" id="maks-kolicina" inputmode="decimal" step="0.1" min="0" placeholder="1200"></div>
+        <div><label for="maks-jedinica">Jedinica</label>
+          <select id="maks-jedinica"><option>kg</option><option>tone</option></select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Koliko se često ulazi u komoru</span>
+      <div class="izbor" id="vrata" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="retko, par puta dnevno">Retko</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="povremeno tokom dana">Povremeno</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="stalno, vrata su često otvorena">Stalno</button>
+      </div>
+      <div style="margin-top:10px">
+        <div class="izbor" id="vilju" data-jedan="1">
+          <button type="button" class="cip" aria-pressed="false" data-v="ulazi viljuškar ili paletar">Ulazi viljuškar / paletar</button>
+          <button type="button" class="cip" aria-pressed="false" data-v="ulazi se samo peške">Samo peške</button>
+        </div>
+      </div>
+      <div style="margin-top:10px"><label for="ljudi">Koliko sati dnevno neko radi unutar komore</label><input type="number" id="ljudi" inputmode="decimal" step="0.5" min="0" placeholder="npr. 2"></div>
+    </div>
+  </section>
+
+  <!-- ============ 06 KONTAKT ============ -->
+  <section class="sekcija">
+    <div class="sekcija-glava"><span class="sekcija-broj">06</span><h2 class="sekcija-ime">Kontakt</h2></div>
+
+    <div class="polje">
+      <label for="ime">Ime ili naziv firme <span class="obavezno">·</span></label>
+      <input type="text" id="ime" autocomplete="name" placeholder="Petar Petrović / Mesara Petrović">
+      <p class="poruka-greske">Upišite ime ili naziv firme.</p>
+    </div>
+
+    <div class="polje">
+      <label for="telefon">Telefon <span class="obavezno">·</span></label>
+      <input type="tel" id="telefon" autocomplete="tel" placeholder="06x xxx xxxx">
+      <p class="poruka-greske">Upišite broj telefona.</p>
+    </div>
+
+    <div class="polje">
+      <label for="mesto">Mesto <span class="obavezno">·</span></label>
+      <input type="text" id="mesto" placeholder="Grad ili opština">
+      <p class="poruka-greske">Upišite mesto — potrebno je zbog izlaska na teren.</p>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Kada vam treba komora</span>
+      <div class="izbor" id="rok" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="hitno">Hitno</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="u roku mesec dana">U roku mesec dana</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="tek se planira">Tek planiram</button>
+      </div>
+    </div>
+
+    <div class="polje">
+      <span class="oznaka">Daljinski nadzor temperature i HACCP evidencija</span>
+      <p class="pomoc">Automatsko merenje i beleženje temperature, uz alarm na telefon kada temperatura izađe iz zadatog opsega.</p>
+      <div class="izbor" id="nadzor" data-jedan="1">
+        <button type="button" class="cip" aria-pressed="false" data-v="da, potreban je">Da, treba mi</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="ne">Ne</button>
+        <button type="button" class="cip" aria-pressed="false" data-v="zanima ga, traži objašnjenje">Zanima me</button>
+      </div>
+    </div>
+
+    <div class="polje">
+      <label for="napomena">Napomena</label>
+      <textarea id="napomena" placeholder="Sve što mislite da je važno, a nije obuhvaćeno pitanjima."></textarea>
+    </div>
+  </section>
+
+  <section class="sekcija" id="sekcija-slanje">
+    <div class="sekcija-glava"><span class="sekcija-broj">07</span><h2 class="sekcija-ime">Pošalji upit</h2></div>
+    <div class="saopstenje" id="saopstenje"></div>
+    <div class="slanje">
+      <button type="button" class="posalji vb" id="dugme-vb">Pošalji na Viber</button>
+      <button type="button" class="posalji wa" id="dugme-wa">Pošalji na WhatsApp</button>
+      <button type="button" class="posalji em" id="dugme-em">Pošalji na email</button>
+    </div>
+    <button type="button" class="kopiraj" id="dugme-kopiraj">ili kopiraj upit i pošalji ručno</button>
+  </section>
+
+  <footer>
+    <div class="logo-ploca">
+      <img src="data:image/webp;base64,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" alt="Frigotech — proizvodnja, montaža i servis rashladnih sistema" width="480" height="352">
+      <a class="logo-veza" href="tel:+381613079197">061 307 9197</a>
+    </div>
+    <p class="sitno">Podaci se šalju direktno u poruku sa vašeg telefona. Ne čuvaju se na ovoj stranici.</p>
+  </footer>
+</div>
+
+<!-- ============ TRAKA ZA SLANJE ============ -->
+<div class="traka">
+  <div class="traka-omot">
+    <div class="displej">
+      <div><span>zapremina</span> <b id="traka-zapremina">— m³</b></div>
+      <div><span>temp</span> <b id="traka-temp">+4 °C</b></div>
+      <div><span>režim</span> <b id="traka-rezim">plusni</b></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   OVDE UPIŠI SVOJE BROJEVE — međunarodni format, bez plusa i razmaka
+   ============================================================ */
+const BROJ_WHATSAPP = "381613079197";   // 061 307 9197
+const BROJ_VIBER    = "381613079197";   // 061 307 9197
+const EMAIL         = "frigotech.rs@gmail.com";
+/* ============================================================ */
+
+const $ = (id) => document.getElementById(id);
+
+/* ---------- dugmad za izbor ---------- */
+document.querySelectorAll('.izbor').forEach(grupa => {
+  if (grupa.id === 'brzi-temp') return;             // skala ima svoju logiku
+  const jedan = grupa.dataset.jedan === '1';
+  grupa.addEventListener('click', e => {
+    const cip = e.target.closest('.cip');
+    if (!cip) return;
+    if (jedan) {
+      grupa.querySelectorAll('.cip').forEach(d => d.setAttribute('aria-pressed', 'false'));
+      cip.setAttribute('aria-pressed', 'true');
+    } else {
+      cip.setAttribute('aria-pressed', cip.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    }
+    grupa.classList.remove('los');
+    sakrijGresku(grupa);
+    if (grupa.id === 'tip') { primeniTip(cip.dataset.v); racunajDimenzije(); }
+    if (grupa.id === 'novost') $('polje-oprema').hidden = !cip.dataset.v.startsWith('Postojeća');
+    if (grupa.id === 'mesto-komore') $('polje-sunce').hidden = cip.dataset.v !== 'napolju';
+  });
+});
+
+/* vrednost izabranog dugmeta / dugmadi */
+function izbor(id) {
+  const v = [...document.querySelectorAll('#' + id + ' .cip[aria-pressed=true]')].map(d => d.dataset.v);
+  return v.join(', ');
+}
+
+/* ---------- brojevi u srpskom zapisu ---------- */
+function broj(n, decimala = 2) {
+  return n.toFixed(decimala).replace('.', ',');
+}
+function uzmiBroj(id) {
+  const v = parseFloat(String($(id).value).replace(',', '.'));
+  return isNaN(v) ? null : v;
+}
+
+/* ---------- dimenzije ---------- */
+/* minusna i šok komora imaju panel pod, pa on ulazi u ukupnu kvadraturu */
+function podJeOdPanela() {
+  const t = izbor('tip');
+  return t.startsWith('Minusna') || t.startsWith('Šok');
+}
+/* kratak naziv režima za prikaz */
+const NAZIV_TIPA = {
+  'Plusna (iznad nule)': 'Plusna komora',
+  'Minusna (ispod nule)': 'Minusna komora',
+  'Komora za zrenje': 'Komora za zrenje',
+  'Šok zamrzavanje': 'Šok komora'
+};
+function racunajDimenzije() {
+  const d = uzmiBroj('duzina'), s = uzmiBroj('sirina'), v = uzmiBroj('visina');
+  const tipV = izbor('tip');
+  const minusna = podJeOdPanela();
+
+  $('izlaz-tip').textContent = tipV ? (NAZIV_TIPA[tipV] || tipV) : '—';
+  $('red-podni').hidden = !minusna;   // podni paneli samo kod minusne i šok komore
+  $('uslov-podni').textContent = tipV.startsWith('Šok') ? '(šok komora)' : '(minusna komora)';
+
+  if (d && s && v) {
+    const pod = d * s;
+    const zidoviPlafon = pod + 2 * (d * v) + 2 * (s * v);   // 4 zida + plafon
+    const ukupno = zidoviPlafon + (minusna ? pod : 0);
+    $('izlaz-mere').textContent = broj(d) + ' × ' + broj(s) + ' × ' + broj(v) + ' m';
+    $('izlaz-zapremina').textContent = broj(d * s * v, 2) + ' m³';
+    $('izlaz-zidovi').textContent = broj(zidoviPlafon, 2) + ' m²';
+    $('izlaz-pod').textContent = broj(pod, 2) + ' m²';
+    $('izlaz-ukupno').textContent = broj(ukupno, 2) + ' m²';
+    $('traka-zapremina').textContent = broj(d * s * v, 1) + ' m³';
+  } else {
+    ['izlaz-mere', 'izlaz-zapremina', 'izlaz-zidovi', 'izlaz-pod', 'izlaz-ukupno']
+      .forEach(i => $(i).textContent = '—');
+    $('traka-zapremina').textContent = '— m³';
+  }
+}
+['duzina', 'sirina', 'visina'].forEach(id => $(id).addEventListener('input', racunajDimenzije));
+
+/* ---------- temperatura: očitavanje i boja stranice ---------- */
+function bojaZaTemp(t) {
+  if (t >= 0)   return '#0F8A6A';   // plusni režim
+  if (t > -15)  return '#1C63C4';   // blagi minus
+  return '#3D2FA8';                 // duboki minus
+}
+function osveziTemperaturu() {
+  const t = parseInt($('temperatura').value, 10);
+  const zapis = (t > 0 ? '+' : '') + t + ' °C';
+  const rezim = t >= 0 ? 'plusni režim' : (t > -15 ? 'minusni režim' : (t > -30 ? 'duboko zamrzavanje' : 'šok režim'));
+  $('izlaz-temp').textContent = zapis;
+  $('izlaz-rezim').textContent = rezim;
+  $('traka-temp').textContent = zapis;
+  $('traka-rezim').textContent = rezim.split(' ')[0];
+  const boja = bojaZaTemp(t);
+  document.documentElement.style.setProperty('--akcenat', boja);
+  document.documentElement.style.setProperty('--akcenat-blago', boja + '1A');
+  document.querySelectorAll('#brzi-temp .cip').forEach(d =>
+    d.setAttribute('aria-pressed', String(parseInt(d.dataset.t, 10) === t)));
+}
+$('temperatura').addEventListener('input', osveziTemperaturu);
+$('brzi-temp').addEventListener('click', e => {
+  const cip = e.target.closest('.cip');
+  if (!cip) return;
+  $('temperatura').value = cip.dataset.t;
+  osveziTemperaturu();
+});
+
+/* režim komore predlaže polaznu temperaturu */
+function primeniTip(v) {
+  const dirano = $('temperatura').dataset.dirano === '1';
+  if (dirano) return;
+  if (v.startsWith('Plusna'))  $('temperatura').value = 4;
+  if (v.startsWith('Minusna')) $('temperatura').value = -20;
+  if (v.startsWith('Komora za zrenje')) $('temperatura').value = 2;
+  if (v.startsWith('Šok'))     $('temperatura').value = -35;
+  osveziTemperaturu();
+}
+$('temperatura').addEventListener('change', () => { $('temperatura').dataset.dirano = '1'; });
+$('brzi-temp').addEventListener('click', () => { $('temperatura').dataset.dirano = '1'; });
+
+/* ---------- greške ---------- */
+function porukaZa(el) {
+  const polje = el.closest('.polje');
+  return polje ? polje.querySelector('.poruka-greske') : null;
+}
+function sakrijGresku(el) {
+  const p = porukaZa(el);
+  if (p) p.classList.remove('vidi');
+}
+function oznaciGresku(el) {
+  if (el.classList.contains('izbor')) el.classList.add('los');
+  else el.classList.add('los');
+  const p = porukaZa(el);
+  if (p) p.classList.add('vidi');
+}
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', () => { el.classList.remove('los'); sakrijGresku(el); });
+});
+
+function proveri() {
+  document.querySelectorAll('.los').forEach(e => e.classList.remove('los'));
+  document.querySelectorAll('.poruka-greske').forEach(e => e.classList.remove('vidi'));
+  const fali = [];
+
+  if (!izbor('tip')) fali.push($('tip'));
+  if (!uzmiBroj('duzina') || !uzmiBroj('sirina') || !uzmiBroj('visina')) fali.push($('duzina'));
+  if (!izbor('roba') && !$('roba-ostalo').value.trim()) fali.push($('roba'));
+  if (!izbor('pod')) fali.push($('pod'));
+  if (!uzmiBroj('unos-kolicina')) fali.push($('unos-kolicina'));
+  if (!$('ulazna-temp').value) fali.push($('ulazna-temp'));
+  if (!izbor('vreme-hladjenja')) fali.push($('vreme-hladjenja'));
+  if (!$('ime').value.trim()) fali.push($('ime'));
+  if (!$('telefon').value.trim()) fali.push($('telefon'));
+  if (!$('mesto').value.trim()) fali.push($('mesto'));
+
+  fali.forEach(oznaciGresku);
+  if (fali.length) {
+    fali[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    javi('Nedostaje ' + fali.length + (fali.length === 1 ? ' obavezan podatak — označen je.' : ' obaveznih podataka — označeni su.'), true);
+    return false;
+  }
+  return true;
+}
+
+/* ---------- saopštenja u traci ---------- */
+let tajmer;
+function javi(tekst, crveno) {
+  const s = $('saopstenje');
+  s.textContent = tekst;
+  s.classList.toggle('crveno', !!crveno);
+  s.classList.add('vidi');
+  clearTimeout(tajmer);
+  tajmer = setTimeout(() => s.classList.remove('vidi'), 6000);
+}
+
+/* ---------- sastavljanje poruke ---------- */
+function red(naziv, vrednost) {
+  return vrednost ? naziv + ': ' + vrednost + '\n' : '';
+}
+function sastaviPoruku() {
+  const d = uzmiBroj('duzina'), s = uzmiBroj('sirina'), v = uzmiBroj('visina');
+  const zapremina = broj(d * s * v, 2);
+  const podBroj = d * s;
+  const zidoviBroj = podBroj + 2 * (d * v) + 2 * (s * v);
+  const minusna = podJeOdPanela();
+  const pod = broj(podBroj, 2);
+  const zidovi = broj(zidoviBroj, 2);
+  const ukupnoPanela = broj(zidoviBroj + (minusna ? podBroj : 0), 2);
+  const t = parseInt($('temperatura').value, 10);
+
+  let roba = izbor('roba');
+  const ostalo = $('roba-ostalo').value.trim();
+  if (ostalo) roba = roba ? roba + ', ' + ostalo : ostalo;
+
+  let vlaznost = izbor('vlaznost');
+  const vlProcenat = uzmiBroj('vlaznost-broj');
+  if (vlProcenat) vlaznost = (vlaznost ? vlaznost + ', ' : '') + vlProcenat + ' %';
+
+  let ulazna = $('ulazna-temp').value;
+  const ulaznaTacna = uzmiBroj('ulazna-temp-broj');
+  if (ulaznaTacna !== null) ulazna += ' — tačno ' + ulaznaTacna + ' °C';
+
+  const sati = uzmiBroj('ljudi');
+  const spolja = uzmiBroj('spolja');
+
+  let p = 'UPIT ZA KOMORU — frigotech\n\n';
+
+  p += '— KOMORA —\n';
+  p += red('Režim', izbor('tip'));
+  p += red('Stanje', izbor('novost'));
+  p += red('Oprema', izbor('oprema'));
+  p += red('Dimenzije', broj(d) + ' x ' + broj(s) + ' x ' + broj(v) + ' m');
+  p += red('Zapremina', zapremina + ' m3');
+  p += red('Pod', pod + ' m2');
+  p += red('Zidovi i plafon', zidovi + ' m2');
+  p += red('Ukupno panela', ukupnoPanela + ' m2' + (minusna ? ' (sa panel podom)' : ' (bez poda)'));
+
+  p += '\n— ROBA —\n';
+  p += red('Vrsta', roba);
+  p += red('Slaganje', izbor('slaganje'));
+  p += red('Vlažnost', vlaznost);
+
+  p += '\n— REŽIM —\n';
+  p += red('Željena temperatura', (t > 0 ? '+' : '') + t + ' °C');
+  p += red('Roba ulazi', ulazna);
+  p += red('Vreme hlađenja', izbor('vreme-hladjenja'));
+
+  p += '\n— OPTEREĆENJE —\n';
+  p += red('Unos robe', uzmiBroj('unos-kolicina') + ' ' + $('unos-jedinica').value + ' ' + izbor('unos-period'));
+  p += red('Treba da stane', uzmiBroj('maks-kolicina') ? uzmiBroj('maks-kolicina') + ' ' + $('maks-jedinica').value : '');
+  p += red('Ulazak u komoru', izbor('vrata'));
+  p += red('Transport', izbor('vilju'));
+  p += red('Rad u komori', sati ? sati + ' h dnevno' : '');
+
+  p += '\n— UGRADNJA —\n';
+  p += red('Položaj', izbor('mesto-komore'));
+  p += red('Sunce', izbor('sunce'));
+  p += red('Panel', $('panel').value);
+  p += red('Pod', izbor('pod'));
+  p += red('Spoljna temperatura', spolja !== null ? spolja + ' °C' : '');
+  p += red('Napajanje', izbor('struja'));
+
+  p += '\n— KONTAKT —\n';
+  p += red('Ime', $('ime').value.trim());
+  p += red('Telefon', $('telefon').value.trim());
+  p += red('Mesto', $('mesto').value.trim());
+  p += red('Rok', izbor('rok'));
+  p += red('Daljinski nadzor', izbor('nadzor'));
+
+  const nap = $('napomena').value.trim();
+  if (nap) p += '\n— NAPOMENA —\n' + nap + '\n';
+
+  return p;
+}
+
+/* ---------- slanje ---------- */
+$('dugme-wa').addEventListener('click', () => {
+  if (!proveri()) return;
+  const tekst = encodeURIComponent(sastaviPoruku());
+  window.open('https://wa.me/' + BROJ_WHATSAPP + '?text=' + tekst, '_blank');
+});
+
+$('dugme-vb').addEventListener('click', () => {
+  if (!proveri()) return;
+  const tekst = encodeURIComponent(sastaviPoruku());
+  window.location.href = 'viber://forward?text=' + tekst;
+  setTimeout(() => javi('Ako se Viber nije otvorio, upit je moguće kopirati dugmetom ispod i poslati ručno.'), 1400);
+});
+
+$('dugme-em').addEventListener('click', () => {
+  if (!proveri()) return;
+  const naslov = encodeURIComponent('Upit za komoru — ' + $('ime').value.trim() + ', ' + $('mesto').value.trim());
+  const telo = encodeURIComponent(sastaviPoruku());
+  window.location.href = 'mailto:' + EMAIL + '?subject=' + naslov + '&body=' + telo;
+});
+
+$('dugme-kopiraj').addEventListener('click', async () => {
+  if (!proveri()) return;
+  const tekst = sastaviPoruku();
+  try {
+    await navigator.clipboard.writeText(tekst);
+    javi('Upit je kopiran. Nalepite ga u poruku i pošaljite.');
+  } catch (e) {
+    const pom = document.createElement('textarea');
+    pom.value = tekst;
+    document.body.appendChild(pom);
+    pom.select();
+    document.execCommand('copy');
+    pom.remove();
+    javi('Upit je kopiran. Nalepite ga u poruku i pošaljite.');
+  }
+});
+
+/* početno stanje */
+osveziTemperaturu();
+racunajDimenzije();
+</script>
+</body>
+</html>

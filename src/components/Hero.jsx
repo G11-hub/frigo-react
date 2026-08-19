@@ -106,12 +106,23 @@ export default function Hero() {
             digitalna HACCP evidencija za hladnjače,
             restorane i prehrambenu industriju.
           </p>
-        <button className="btn-primary" onClick={() => document.getElementById('kontakt')?.scrollIntoView({ behavior: 'smooth' })}>
-  Zatraži Demo →
-</button>
-<button className="btn-secondary" onClick={() => document.getElementById('funkcije')?.scrollIntoView({ behavior: 'smooth' })}>
-  Istraži Funkcije
-</button>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <button className="btn-primary" onClick={() => document.getElementById('kontakt')?.scrollIntoView({ behavior: 'smooth' })}>
+              Zatraži Demo →
+            </button>
+            <button className="btn-secondary" onClick={() => document.getElementById('funkcije')?.scrollIntoView({ behavior: 'smooth' })}>
+              Istraži Funkcije
+            </button>
+            <a
+              href="/upitnik-komore.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-tertiary"
+              style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              Izračunaj ponudu za komoru →
+            </a>
+          </div>
         </div>
        <div style={{ animation: 'slide-in-right 0.8s ease-out forwards', paddingBottom: '60px' }}>
   <HeroDashboard />
