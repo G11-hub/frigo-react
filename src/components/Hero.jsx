@@ -97,7 +97,7 @@ export default function Hero() {
             HACCP Monitoring · Alarmi · Istorija Temperature
           </div>
           <h1 className="hero-title">
-            <span className="gradient">Potpuna kontrola</span>
+            <span className="gradient">Potpuni monitoring</span>
             <br />temperature i vlažnosti
             <br />u realnom vremenu
           </h1>
